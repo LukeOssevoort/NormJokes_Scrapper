@@ -1,5 +1,4 @@
 from requests_html import HTMLSession
-from random import randint
 
 def get_joke(number):
     session = HTMLSession()
@@ -13,6 +12,3 @@ def get_joke(number):
     print("\nEpisode:")
     print(ep.text)
     print(guest.text)
-
-joke_no = randint(0,406)
-get_joke(joke_no)
