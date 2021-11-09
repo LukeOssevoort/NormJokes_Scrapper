@@ -1,15 +1,35 @@
-from normjokes_scrapper import get_joke
+from normjokes_scrapper import get_jokelist
 from random import randint
 import discord
 from discord.ext import commands
+import pickle
 
-jokelist = []
+tokenFileName = 'token.pkl'
+jokeFileName = 'jokelist.pkl'
 
-for i in range(407):
-    jokelist.append(get_joke(i))
-    print('Loaded joke index ' + str(i) + ' of 406')
-else:
-    print('Jokes loaded')
+try:
+    tokenFile = open(tokenFileName,'r')
+    token = tokenFile.readline()
+    print('Loaded discord token')
+    tokenFile.close()
+except:
+    tokenFile = open(tokenFileName, 'w+')
+    token = input('Enter discord bot token: ')
+    tokenFile.write(token)
+    print('Saved discord token')
+    tokenFile.close()
+
+try:
+    jokeFile = open(jokeFileName, 'rb')
+    jokelist = pickle.load(jokeFile)
+    print('Loaded jokes from file')
+    jokeFile.close()
+except:
+    jokeFile = open(jokeFileName, 'wb+')
+    jokelist = get_jokelist()
+    pickle.dump(jokelist, jokeFile)
+    print('Saved joke list')
+    jokeFile.close()
 
 description = '''An example bot to showcase the discord.ext.commands extension
 module.
@@ -36,4 +56,4 @@ async def normjoke(ctx, *args: int):
 
     await ctx.send(joke.text.replace('\n','\n\n') + '\n\n' + joke.ep + '\n' + joke.guest)
 
-bot.run('token')
+bot.run(token)
