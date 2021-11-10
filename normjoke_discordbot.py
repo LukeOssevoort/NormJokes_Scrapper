@@ -1,4 +1,4 @@
-from normjokes_scrapper import get_jokelist
+from normjokes_scrapper import get_jokepickle
 from random import randint
 import discord
 from discord.ext import commands
@@ -19,17 +19,7 @@ except:
     print('Saved discord token')
     tokenFile.close()
 
-try:
-    jokeFile = open(jokeFileName, 'rb')
-    jokelist = pickle.load(jokeFile)
-    print('Loaded jokes from file')
-    jokeFile.close()
-except:
-    jokeFile = open(jokeFileName, 'wb+')
-    jokelist = get_jokelist()
-    pickle.dump(jokelist, jokeFile)
-    print('Saved joke list')
-    jokeFile.close()
+jokelist = get_jokepickle(jokeFileName)
 
 description = '''An example bot to showcase the discord.ext.commands extension
 module.

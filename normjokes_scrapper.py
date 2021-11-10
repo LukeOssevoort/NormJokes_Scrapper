@@ -1,5 +1,6 @@
 from requests_html import HTMLSession
 from collections import namedtuple
+import pickle
 
 session = HTMLSession()
 Joke = namedtuple("Joke", "text ep guest")
@@ -23,4 +24,18 @@ def get_jokelist():
         print('')
         print('Jokes loaded')
     
+    return jokelist
+
+def get_jokepickle(jokeFileName):
+    try:
+        jokeFile = open(jokeFileName, 'rb')
+        jokelist = pickle.load(jokeFile)
+        print('Loaded jokes from file')
+        jokeFile.close()
+    except:
+        jokeFile = open(jokeFileName, 'wb+')
+        jokelist = get_jokelist()
+        pickle.dump(jokelist, jokeFile)
+        print('Saved joke list')
+        jokeFile.close()
     return jokelist
